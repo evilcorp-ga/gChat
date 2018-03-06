@@ -1,0 +1,7 @@
+'use strict';
+
+module.exports = function (req, res, next) {
+    req.ctx = {};
+    req.ctx.title = 'geoChat';
+    next();
+}

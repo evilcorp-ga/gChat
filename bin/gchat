@@ -17,6 +17,7 @@ var app = express();
 function enableMiddleware() {
         return new Promise((fullfill, reject) => {
                 logger.info('Loading applicaiton middleware');
+                app.set('view engine', 'pug');
                 app.use(middleware);
                 fullfill();
         });

@@ -7,6 +7,7 @@ require('dotenv').config();
 
 var express = require('express');
 var Promise = require('bluebird');
+var logger = require('../lib/logs');
 
 var middleware = require('../middleware');
 var routes = require('../routes');
@@ -15,6 +16,7 @@ var app = express();
 
 function enableMiddleware() {
         return new Promise((fullfill, reject) => {
+                logger.info('Loading applicaiton middleware');
                 app.use(middleware);
                 fullfill();
         });
@@ -22,6 +24,7 @@ function enableMiddleware() {
 
 function enableRoutes() {
         return new Promise((fullfill, reject) => {
+                logger.info('Loading applicaiton routes');
                 app.use(routes);
                 fullfill();
         });
@@ -34,6 +37,7 @@ function startHttpServer() {
                         if (err) {
                                 reject(err);
                         } else {
+                                logger.info('Starting http server');
                                 fullfill();
                         }
                 });
@@ -44,5 +48,5 @@ enableMiddleware()
         .then(enableRoutes)
         .then(startHttpServer)
         .catch((err) => {
-                console.log(err.message);
+                logger.error(err.message);
         });

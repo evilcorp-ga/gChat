@@ -1,4 +1,7 @@
 extends ../base
 
 block body
-    h1 landing
+    form(method='post' action='/chat/new')
+        input(type="text" placeholder="username" name='username')
+        input(type="channel" placeholder="#channel" value=env.defaultChan name='channel')
+        button Connect

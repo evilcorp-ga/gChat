@@ -1,0 +1,48 @@
+#! node
+// vim: set ft=javascript ts=8 sw=8 et:
+
+'use strict';
+
+require('dotenv').config();
+
+var express = require('express');
+var Promise = require('bluebird');
+
+var middleware = require('../middleware');
+var routes = require('../routes');
+
+var app = express();
+
+function enableMiddleware() {
+        return new Promise((fullfill, reject) => {
+                app.use(middleware);
+                fullfill();
+        });
+}
+
+function enableRoutes() {
+        return new Promise((fullfill, reject) => {
+                app.use(routes);
+                fullfill();
+        });
+}
+
+function startHttpServer() {
+        return new Promise((fullfill, reject) => {
+                var httpPort = process.env.PORT;
+                app.listen(httpPort, (err) => {
+                        if (err) {
+                                reject(err);
+                        } else {
+                                fullfill();
+                        }
+                });
+        });
+}
+
+enableMiddleware()
+        .then(enableRoutes)
+        .then(startHttpServer)
+        .catch((err) => {
+                console.log(err.message);
+        });
